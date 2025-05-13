@@ -1,8 +1,11 @@
 package com.invcalc.server.pricedataservice;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -29,10 +32,14 @@ public class PricedataserviceApplication {
 	public CommandLineRunner demoCommandLineRunner() {
 		return args -> {
 			System.out.println("cmd running---------------------------------------------------");
-			Price p1 = new Price();
-			p1.setValue(1.0);
-			p1.setTimeStamp(new Timestamp(0));
-			priceRepository.saveAll(List.of(p1));
+			List<Price> prices = new ArrayList<>();
+			for (int i = 0; i < 100; i++) {
+				Price p = new Price();
+				p.setTimeStamp(new Timestamp(i));
+				p.setValue((new Random()).nextDouble());
+				prices.add(p);
+			}
+			priceRepository.saveAll(prices);
 		};
 	}
 }
